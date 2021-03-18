@@ -1,16 +1,27 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.border-red {
+  border: 1px solid red;
+  border-radius: 10px;
 }
 
-a {
-  color: inherit;
+.btn {
+  display: inline-block;
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
   text-decoration: none;
+  font-size: 15px;
+  font-family: inherit;
 }
 
-* {
-  box-sizing: border-box;
+.btn-block {
+  display: block;
+  width: 100%;
 }
