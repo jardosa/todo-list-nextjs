@@ -28,7 +28,7 @@ export default function TodosProvider({ children }) {
         setTodos(() => data.filter((todo)=> todo.status === filterStatus ));
       }
     })();
-  }, [todos,filterStatus]);
+  }, [filterStatus]);
 
   return (
     <TodosContext.Provider value={todos}>

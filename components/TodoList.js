@@ -1,6 +1,7 @@
 import { message } from "antd";
 import React from "react";
-import { FaTimes, FaAngleDoubleRight, FaCheck } from "react-icons/fa";
+import { FaTimes, FaAngleDoubleRight, FaCheck, FaCaretDown } from "react-icons/fa";
+import formatAMPM from "../utils/formatAMPM";
 import { deleteTodo, fetchTodo, updateTodo } from "../utils/TodoUtils";
 import {
   useTodosContext,
@@ -43,10 +44,13 @@ const TodoList = () => {
   };
 
   const rows = todos.map((row) => {
+    const unformattedDate = new Date(`${row.date} ${row.time}`);
+    const correctTime = formatAMPM(unformattedDate);
+
     return (
       <tr key={row.id}>
         <td className="border border-blue-100">{row.title}</td>
-        <td className="border border-blue-100">{`${row.date} at ${row.time}`}</td>
+        <td className="border border-blue-100">{`${row.date} at ${correctTime}`}</td>
         <td className="border border-blue-100">{row.status}</td>
         <td className="border border-blue-100">
           {row.status !== "Completed" && (
@@ -77,16 +81,21 @@ const TodoList = () => {
     <div>
       <div className="mb-4 space-y-2">
         <label className="font-bold text-base">Filter By Status</label>
-        <select
-          onChange={(e) => handleFilterStatus(e.target.value)}
-          defaultValue={filterStatus}
-          className="text-base block bg-white rounded-sm px-2 border border-transparent focus:outline-none shadow-md focus:ring-2 focus:ring-blue-600 focus:border-transparent cursor-pointer"
-        >
-          <option value="All">All</option>
-          <option value="Not Started">Not Started</option>
-          <option value="In Progress">In Progress</option>
-          <option value="Completed">Completed</option>
-        </select>
+        <div className="relative mt-2 overflow-hidden">
+          <select
+            onChange={(e) => handleFilterStatus(e.target.value)}
+            defaultValue={filterStatus}
+            className="px-4 py-2 pr-8 w-full shadow-md bg-white border border-gray-200 rounded leading-tight  focus:outline-none"
+          >
+            <option value="All">All</option>
+            <option value="Not Started">Not Started</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+          </select>
+          <div className="absolute inset-y-0 right-0 px-3 bg-gray-200 rounded-r text-gray-700 flex items-center pointer-events-none">
+            <FaCaretDown />
+          </div>
+        </div>
       </div>
       {todos.length > 0 ? (
         <table className="table-fixed w-full bg-white">
