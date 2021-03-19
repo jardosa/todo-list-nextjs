@@ -25,3 +25,8 @@
   display: block;
   width: 100%;
 }
+
+.btn-delete {
+  color: red;
+  cursor: pointer;
+}

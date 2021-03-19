@@ -1,5 +1,5 @@
 import { ListContext } from "antd/lib/list";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 const TodosContext = React.createContext();
 const TodosUpdate = React.createContext();
@@ -13,6 +13,15 @@ export function useTodosUpdateContext() {
 
 export default function TodosProvider({ children }) {
   const [todos, setTodos] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const res = await fetch("http://localhost:5000/todos");
+      const data = await res.json();
+
+      setTodos(() => data);
+    })();
+  },[]);
 
   return (
     <TodosContext.Provider value={todos}>
