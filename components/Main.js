@@ -11,7 +11,7 @@ const Main = () => {
           <h1 className="text-3xl">Todo List</h1>
           <button
             onClick={() => setShowTodoForm((showTodoForm) => !showTodoForm)}
-            className={`cursor-pointer w-3/12 text-gray-100 rounded-sm px-2 shadow-md ${
+            className={`mb-3 cursor-pointer w-3/12 text-gray-100 rounded-sm px-2 shadow-md ${
               !showTodoForm ? "bg-blue-600" : "bg-red-600"}`}
           >
             {!showTodoForm ? `Add Todo` : `Hide Todo Form`}

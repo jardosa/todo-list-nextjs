@@ -1,8 +1,9 @@
-import { ListContext } from "antd/lib/list";
 import React, { useContext, useEffect, useState } from "react";
+import { fetchTodos } from "../utils/TodoUtils";
 
 const TodosContext = React.createContext();
 const TodosUpdate = React.createContext();
+const TodosFilter = React.createContext();
 
 export function useTodosContext() {
   return useContext(TodosContext);
@@ -10,22 +11,30 @@ export function useTodosContext() {
 export function useTodosUpdateContext() {
   return useContext(TodosUpdate);
 }
+export function useTodosFilterStatusContext() {
+  return useContext(TodosFilter);
+}
 
 export default function TodosProvider({ children }) {
   const [todos, setTodos] = useState([]);
+  const [filterStatus, setFilterStatus] = useState('All');
 
   useEffect(() => {
     (async () => {
-      const res = await fetch("http://localhost:5000/todos");
-      const data = await res.json();
-
-      setTodos(() => data);
+      const data = await fetchTodos();
+      if (filterStatus && filterStatus === "All") {
+        setTodos(() => data);
+      } else {
+        setTodos(() => data.filter((todo)=> todo.status === filterStatus ));
+      }
     })();
-  },[]);
+  }, [todos,filterStatus]);
 
   return (
     <TodosContext.Provider value={todos}>
-      <TodosUpdate.Provider value={setTodos}>{children}</TodosUpdate.Provider>
+      <TodosFilter.Provider value={[filterStatus, setFilterStatus]}>
+        <TodosUpdate.Provider value={setTodos}>{children}</TodosUpdate.Provider>
+      </TodosFilter.Provider>
     </TodosContext.Provider>
   );
 }
