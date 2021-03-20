@@ -23,4 +23,4 @@ and data is saved in db.json
 
 Screenshot of App
 ![Image of App]
-(https://github.com/jardosa/todo-list-nextjs/blob/main/public/app.png)
+(images/app.png)
