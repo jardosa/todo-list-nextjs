@@ -98,21 +98,20 @@ const TodoList = () => {
       );
     });
   return (
-    <div>
+    <div className="space-y-2">
       <div>
         <label className="font-bold text-base">Search By Title</label>
-        <div className="relative mt-2 overflow-hidden">
+        <div className="relative mt-2">
           <input
-            className="px-4 py-2 pr-8 w-full shadow-md bg-white border border-gray-200 rounded leading-tight  focus:outline-none"
+            className="px-4 py-2 pr-8 w-full shadow-md bg-white border border-gray-200 rounded leading-tight focus:ring-2 focus:ring-blue-600  focus:outline-none"
             type="text"
-            // value={search}
             onChange={(e) => handleSearch(e.target.value)}
           />
         </div>
       </div>
       <div className="mb-4 space-y-2">
         <label className="font-bold text-base">Filter By Status</label>
-        <div className="relative mt-2 overflow-hidden">
+        <div className="relative mt-2">
           <select
             onChange={(e) => handleFilterStatus(e.target.value)}
             defaultValue={filterStatus}
@@ -128,12 +127,13 @@ const TodoList = () => {
           </div>
         </div>
       </div>
+      <div>
       {todos.length > 0 ? (
         <table className="table-fixed w-full bg-white">
           <thead>
             <tr>
               <th className="border border-blue-100 w-2/6">Title</th>
-              <th className="border border-blue-100 w-2/6">Date And Time</th>
+              <th className="border border-blue-100 w-2/6">Date & Time</th>
               <th className="border border-blue-100 w-1/6">Status</th>
               <th className="border border-blue-100 w-1/6">Options</th>
             </tr>
@@ -143,6 +143,7 @@ const TodoList = () => {
       ) : (
         "There are no todos"
       )}
+      </div>
     </div>
   );
 };

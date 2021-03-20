@@ -107,7 +107,7 @@ const AddTodo = ({ setShowTodoForm }) => {
                 <option>In Progress</option>
                 <option>Completed</option>
               </select>
-              <div className="absolute inset-y-0 right-0 px-3 bg-gray-200 rounded-r text-gray-700 flex items-center pointer-events-none">
+              <div className="absolute inset-y-0 right-0 px-3 bg-gray-200  rounded-r text-gray-700 flex items-center pointer-events-none shadow-md">
                 <FaCaretDown />
               </div>
             </div>
