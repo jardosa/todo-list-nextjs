@@ -1,4 +1,4 @@
-import { message } from "antd";
+import { message, Tooltip } from "antd";
 import React from "react";
 import { debounce } from "lodash";
 import {
@@ -76,21 +76,28 @@ const TodoList = () => {
             {row.status !== "Completed" && (
               <>
                 {row.status === "Not Started" && (
-                  <FaAngleDoubleRight
-                    onClick={() => handleStatusChange(row.id, "In Progress")}
-                    className="cursor-pointer inline-block mr-1 text-lg text-yellow-400"
-                  />
+                  <Tooltip title="Set task to In Progress">
+                    <FaAngleDoubleRight
+                      onClick={() => handleStatusChange(row.id, "In Progress")}
+                      className="cursor-pointer inline-block mr-1 text-lg text-yellow-400"
+                    />
+                  </Tooltip>
                 )}
                 {row.status !== "Not Started" && (
-                  <FaCheck
-                    onClick={() => handleStatusChange(row.id, "Completed")}
-                    className="cursor-pointer text-green-600 inline-block mr-1 text-lg"
-                  />
+                  <Tooltip title="Complete Task">
+                    <FaCheck
+                      onClick={() => handleStatusChange(row.id, "Completed")}
+                      classNa
+                      me="cursor-pointer text-green-600 inline-block mr-1 text-lg"
+                    />
+                  </Tooltip>
                 )}
-                <FaTimes
-                  className="cursor-pointer text-red-600 inline-block mr-1 text-lg"
-                  onClick={() => handleDelete(row.id)}
-                />
+                <Tooltip title="Delete Task">
+                  <FaTimes
+                    className="cursor-pointer text-red-600 inline-block mr-1 text-lg"
+                    onClick={() => handleDelete(row.id)}
+                  />
+                </Tooltip>
               </>
             )}
           </td>
@@ -128,21 +135,21 @@ const TodoList = () => {
         </div>
       </div>
       <div>
-      {todos.length > 0 ? (
-        <table className="table-fixed w-full bg-white">
-          <thead>
-            <tr>
-              <th className="border border-blue-100 w-2/6">Title</th>
-              <th className="border border-blue-100 w-2/6">Date & Time</th>
-              <th className="border border-blue-100 w-1/6">Status</th>
-              <th className="border border-blue-100 w-1/6">Options</th>
-            </tr>
-          </thead>
-          <tbody>{rows}</tbody>
-        </table>
-      ) : (
-        "There are no todos"
-      )}
+        {todos.length > 0 ? (
+          <table className="table-fixed w-full bg-white">
+            <thead>
+              <tr>
+                <th className="border border-blue-100 w-2/6">Title</th>
+                <th className="border border-blue-100 w-2/6">Date & Time</th>
+                <th className="border border-blue-100 w-1/6">Status</th>
+                <th className="border border-blue-100 w-1/6">Options</th>
+              </tr>
+            </thead>
+            <tbody>{rows}</tbody>
+          </table>
+        ) : (
+          "There are no todos"
+        )}
       </div>
     </div>
   );
