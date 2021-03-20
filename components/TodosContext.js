@@ -23,7 +23,7 @@ export function useTodosSearchContext() {
 export default function TodosProvider({ children }) {
   const [todos, setTodos] = useState([]);
   const [filterStatus, setFilterStatus] = useState("All");
-  const [search, setSearch] = useState();
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     (async () => {

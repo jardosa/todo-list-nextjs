@@ -8,12 +8,14 @@ First, run the development server:
 
 ```bash
 npm run dev
-open another terminal and 
+open another terminal and
 bash
 npm run server
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+Json-server is being run on [http://localhost:5000](http://localhost:5000)
 
 Backend used for this is a fake REST API from [json-server](https://github.com/typicode/json-server)
 
