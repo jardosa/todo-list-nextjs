@@ -24,9 +24,7 @@ const TodoList = () => {
 
   const handleSearch = async (value) => {
     const searchVal = value;
-    const debouncedSearch = debounce(() => setSearch(() => searchVal), 300, {
-      leading: true,
-    });
+    const debouncedSearch = debounce(() => setSearch(() => searchVal), 1000);
     debouncedSearch();
   };
 
