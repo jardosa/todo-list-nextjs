@@ -1,11 +1,18 @@
 import { message } from "antd";
 import React from "react";
-import { FaTimes, FaAngleDoubleRight, FaCheck, FaCaretDown } from "react-icons/fa";
+import { debounce } from "lodash";
+import {
+  FaTimes,
+  FaAngleDoubleRight,
+  FaCheck,
+  FaCaretDown,
+} from "react-icons/fa";
 import formatAMPM from "../utils/formatAMPM";
 import { deleteTodo, fetchTodo, updateTodo } from "../utils/TodoUtils";
 import {
   useTodosContext,
   useTodosFilterStatusContext,
+  useTodosSearchContext,
   useTodosUpdateContext,
 } from "./TodosContext";
 
@@ -13,6 +20,15 @@ const TodoList = () => {
   const todos = useTodosContext();
   const setTodos = useTodosUpdateContext();
   const [filterStatus, setFilterStatus] = [...useTodosFilterStatusContext()];
+  const [search, setSearch] = [...useTodosSearchContext()];
+
+  const handleSearch = async (value) => {
+    const searchVal = value;
+    const debouncedSearch = debounce(() => setSearch(() => searchVal), 300, {
+      leading: true,
+    });
+    debouncedSearch();
+  };
 
   const handleDelete = async (id) => {
     const res = await deleteTodo(id);
@@ -43,42 +59,57 @@ const TodoList = () => {
     message.success("Task updated!");
   };
 
-  const rows = todos.map((row) => {
-    const unformattedDate = new Date(`${row.date} ${row.time}`);
-    const correctTime = formatAMPM(unformattedDate);
+  const searchRegex = new RegExp(`${search}`, "gmi");
 
-    return (
-      <tr key={row.id}>
-        <td className="border border-blue-100">{row.title}</td>
-        <td className="border border-blue-100">{`${row.date} at ${correctTime}`}</td>
-        <td className="border border-blue-100">{row.status}</td>
-        <td className="border border-blue-100">
-          {row.status !== "Completed" && (
-            <>
-              {row.status === "Not Started" && (
-                <FaAngleDoubleRight
-                  onClick={() => handleStatusChange(row.id, "In Progress")}
-                  className="cursor-pointer inline-block mr-1 text-lg text-yellow-400"
+  const rows = todos
+    .filter(({ title }) => title.match(searchRegex))
+    .map((row) => {
+      const unformattedDate = new Date(`${row.date} ${row.time}`);
+      const correctTime = formatAMPM(unformattedDate);
+
+      return (
+        <tr key={row.id}>
+          <td className="border border-blue-100">{row.title}</td>
+          <td className="border border-blue-100">{`${row.date} at ${correctTime}`}</td>
+          <td className="border border-blue-100">{row.status}</td>
+          <td className="border border-blue-100">
+            {row.status !== "Completed" && (
+              <>
+                {row.status === "Not Started" && (
+                  <FaAngleDoubleRight
+                    onClick={() => handleStatusChange(row.id, "In Progress")}
+                    className="cursor-pointer inline-block mr-1 text-lg text-yellow-400"
+                  />
+                )}
+                {row.status !== "Not Started" && (
+                  <FaCheck
+                    onClick={() => handleStatusChange(row.id, "Completed")}
+                    className="cursor-pointer text-green-600 inline-block mr-1 text-lg"
+                  />
+                )}
+                <FaTimes
+                  className="cursor-pointer text-red-600 inline-block mr-1 text-lg"
+                  onClick={() => handleDelete(row.id)}
                 />
-              )}
-              {row.status !== "Not Started" && (
-                <FaCheck
-                  onClick={() => handleStatusChange(row.id, "Completed")}
-                  className="cursor-pointer text-green-600 inline-block mr-1 text-lg"
-                />
-              )}
-              <FaTimes
-                className="cursor-pointer text-red-600 inline-block mr-1 text-lg"
-                onClick={() => handleDelete(row.id)}
-              />
-            </>
-          )}
-        </td>
-      </tr>
-    );
-  });
+              </>
+            )}
+          </td>
+        </tr>
+      );
+    });
   return (
     <div>
+      <div>
+        <label className="font-bold text-base">Search By Title</label>
+        <div className="relative mt-2 overflow-hidden">
+          <input
+            className="px-4 py-2 pr-8 w-full shadow-md bg-white border border-gray-200 rounded leading-tight  focus:outline-none"
+            type="text"
+            // value={search}
+            onChange={(e) => handleSearch(e.target.value)}
+          />
+        </div>
+      </div>
       <div className="mb-4 space-y-2">
         <label className="font-bold text-base">Filter By Status</label>
         <div className="relative mt-2 overflow-hidden">

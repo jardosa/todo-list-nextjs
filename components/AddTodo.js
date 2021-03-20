@@ -115,11 +115,11 @@ const AddTodo = ({ setShowTodoForm }) => {
           <div>
             <input
               type="submit"
-              className="cursor-pointer w-2/12 mr-2 text-gray-100 rounded-sm px-2 shadow-md bg-blue-600"
+              className="cursor-pointer w-2/12 mr-2 py-1 text-gray-100 rounded-sm px-2 shadow-md bg-blue-600 hover:bg-blue-500"
               value="Submit"
             />
             <button
-              className="cursor-pointer w-2/12 mr-2 text-gray-100 rounded-sm px-2 shadow-md bg-red-600"
+              className="cursor-pointer w-2/12 mr-2 py-1 text-gray-100 rounded-sm px-2 shadow-md bg-red-600 hover:bg-red-500"
               onClick={handleClickDiscard}
             >
               Discard
