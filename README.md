@@ -18,6 +18,9 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 Json-server is being run on [http://localhost:5000](http://localhost:5000)
 
 Backend used for this is a fake REST API from [json-server](https://github.com/typicode/json-server)
+and data is saved in db.json
 
+
+Screenshot of App
 ![Image of App]
-(public/app.png)
+(https://github.com/jardosa/todo-list-nextjs/blob/main/public/app.png)
