@@ -22,5 +22,4 @@ and data is saved in db.json
 
 
 Screenshot of App
-![Image of App]
-(images/app.png)
+![Image of App](images/app.png)
