@@ -20,7 +20,7 @@ Json-server is being run on [http://localhost:5000](http://localhost:5000)
 Backend used for this is a fake REST API from [json-server](https://github.com/typicode/json-server)
 and data is saved in db.json
 
-Screenshot of App
+## Screenshot of App
 
 
 ![Image of App](images/app.png)
