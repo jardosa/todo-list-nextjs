@@ -1,3 +1,13 @@
+export async function addTodo(values) {
+  await fetch("http://localhost:5000/todos", {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify(values),
+  });
+}
+
 export async function fetchTodo(id) {
   const res = await fetch(`http://localhost:5000/todos/${id}`);
 

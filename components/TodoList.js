@@ -85,8 +85,7 @@ const TodoList = () => {
                   <Tooltip title="Complete Task">
                     <FaCheck
                       onClick={() => handleStatusChange(row.id, "Completed")}
-                      classNa
-                      me="cursor-pointer text-green-600 inline-block mr-1 text-lg"
+                      className="cursor-pointer text-green-600 inline-block mr-1 text-lg"
                     />
                   </Tooltip>
                 )}

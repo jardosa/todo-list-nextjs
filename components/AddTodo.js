@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { useTodosUpdateContext } from "./TodosContext";
 import { message } from "antd";
 import { FaCar, FaCaretDown } from "react-icons/fa";
+import { addTodo } from "../utils/TodoUtils";
 
 const AddTodo = ({ setShowTodoForm }) => {
   const [title, setTitle] = useState("");
@@ -22,21 +23,12 @@ const AddTodo = ({ setShowTodoForm }) => {
       status: status.value,
     };
 
-    await fetch("http://localhost:5000/todos", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify(values),
-    });
+    await addTodo(values);
+    const res = await fetch("http://localhost:5000/todos");
+    const data = await res.json();
 
-    (async () => {
-      const res = await fetch("http://localhost:5000/todos");
-      const data = await res.json();
-
-      message.success("Added New Task");
-      setTodos(() => data);
-    })();
+    message.success("Added New Task");
+    setTodos(() => data);
 
     setTitle("");
     setDate("");
