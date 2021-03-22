@@ -40,19 +40,15 @@ export default function TodosProvider({ children }) {
         setLoading(false)
         return;
       }
+      setTodos(()=> data)
       setLoading(false)
-      if (filterStatus && filterStatus === "All") {
-        setTodos(() => data);
-      } else {
-        setTodos(() => data.filter((todo) => todo.status === filterStatus));
-      }
     })();
-  }, [filterStatus, search]);
+  }, []);
 
   return (
-    <TodosContext.Provider value={[todos, error, loading]}>
-      <TodosFilter.Provider value={[filterStatus, setFilterStatus]}>
-        <TodosSearch.Provider value={[search, setSearch]}>
+    <TodosContext.Provider value={{todos, error, loading}}>
+      <TodosFilter.Provider value={{filterStatus, setFilterStatus}}>
+        <TodosSearch.Provider value={{search, setSearch}}>
           <TodosUpdate.Provider value={setTodos}>
             {children}
           </TodosUpdate.Provider>

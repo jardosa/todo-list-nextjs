@@ -5,7 +5,7 @@ import { useTodosContext } from "./TodosContext";
 
 const Main = () => {
   const [showTodoForm, setShowTodoForm] = useState(true);
-  const [_, error, loading] = [...useTodosContext()];
+  const {todos, error, loading} = useTodosContext();
   const loadingNode = (
     <div className="h-screen items-center flex justify-center  mx-auto shadow-md">
       <div className="text-center">

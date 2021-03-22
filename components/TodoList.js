@@ -1,5 +1,5 @@
 import { Alert, message, Tooltip } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import { debounce } from "lodash";
 import {
   FaTimes,
@@ -21,10 +21,10 @@ import {
 } from "../styles/stylingDefault";
 
 const TodoList = () => {
-  const [todos, error] = [...useTodosContext()];
+  const { todos, error } = useTodosContext();
   const setTodos = useTodosUpdateContext();
-  const [filterStatus, setFilterStatus] = [...useTodosFilterStatusContext()];
-  const [search, setSearch] = [...useTodosSearchContext()];
+  const { filterStatus, setFilterStatus } = useTodosFilterStatusContext();
+  const { search, setSearch } = useTodosSearchContext();
 
   const handleSearch = async (value) => {
     const searchVal = value;
@@ -72,6 +72,13 @@ const TodoList = () => {
   );
   const rows = todos
     .filter(({ title }) => title.match(searchRegex))
+    .filter(({ status }) => {
+      if (filterStatus === "All") {
+        return status;
+      } else {
+        return status === filterStatus;
+      }
+    })
     .map((row) => {
       const unformattedDate = new Date(`${row.date} ${row.time}`);
       const correctTime = formatAMPM(unformattedDate);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { useTodosContext, useTodosUpdateContext } from "./TodosContext";
 import { message } from "antd";
@@ -10,7 +10,7 @@ import {
 } from "../styles/stylingDefault";
 
 const AddTodo = ({ setShowTodoForm }) => {
-  const [_, error] = [...useTodosContext()];
+  const { error } = useTodosContext();
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
