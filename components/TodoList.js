@@ -1,4 +1,4 @@
-import { message, Tooltip } from "antd";
+import { Alert, message, Tooltip } from "antd";
 import React from "react";
 import { debounce } from "lodash";
 import {
@@ -15,9 +15,13 @@ import {
   useTodosSearchContext,
   useTodosUpdateContext,
 } from "./TodosContext";
+import {
+  defaultInputStyling,
+  defaultPointerStyling,
+} from "../styles/stylingDefault";
 
 const TodoList = () => {
-  const todos = useTodosContext();
+  const [todos, error] = [...useTodosContext()];
   const setTodos = useTodosUpdateContext();
   const [filterStatus, setFilterStatus] = [...useTodosFilterStatusContext()];
   const [search, setSearch] = [...useTodosSearchContext()];
@@ -29,8 +33,7 @@ const TodoList = () => {
   };
 
   const handleDelete = async (id) => {
-    
-    const {res} = await request('DELETE', id)
+    const { res } = await request("DELETE", id);
     if (res.status === 200) {
       setTodos(() => todos.filter((todo) => todo.id !== id));
       message.info("A task has been removed");
@@ -44,10 +47,10 @@ const TodoList = () => {
   };
 
   const handleStatusChange = async (id, status) => {
-    const {data: resData} = await request('GET', id, _);
+    const { data: resData } = await request("GET", id, _);
     const updatedTask = { ...resData, status };
 
-    const {data} = await request('PUT', id, updatedTask);
+    const { data } = await request("PUT", id, updatedTask);
 
     setTodos((todos) => {
       const newTodos = todos.map((todo) =>
@@ -60,6 +63,13 @@ const TodoList = () => {
 
   const searchRegex = new RegExp(`${search}`, "gmi");
 
+  const errorMessage = (
+    <Alert
+      message="Todos Table not found"
+      description="Your db.json file does not include a todos key. Please include one"
+      type="warning"
+    />
+  );
   const rows = todos
     .filter(({ title }) => title.match(searchRegex))
     .map((row) => {
@@ -78,7 +88,7 @@ const TodoList = () => {
                   <Tooltip title="Set task to In Progress">
                     <FaAngleDoubleRight
                       onClick={() => handleStatusChange(row.id, "In Progress")}
-                      className="cursor-pointer inline-block mr-1 text-lg text-yellow-400"
+                      className={[...defaultPointerStyling, "text-yellow-400"]}
                     />
                   </Tooltip>
                 )}
@@ -86,13 +96,13 @@ const TodoList = () => {
                   <Tooltip title="Complete Task">
                     <FaCheck
                       onClick={() => handleStatusChange(row.id, "Completed")}
-                      className="cursor-pointer text-green-600 inline-block mr-1 text-lg"
+                      className={[...defaultPointerStyling, "text-green-600"]}
                     />
                   </Tooltip>
                 )}
                 <Tooltip title="Delete Task">
                   <FaTimes
-                    className="cursor-pointer text-red-600 inline-block mr-1 text-lg"
+                    className={[...defaultPointerStyling, "text-red-600"]}
                     onClick={() => handleDelete(row.id)}
                   />
                 </Tooltip>
@@ -103,53 +113,81 @@ const TodoList = () => {
       );
     });
   return (
-    <div className="space-y-2">
-      <div>
-        <label className="font-bold text-base">Search By Title</label>
-        <div className="relative mt-2">
-          <input
-            className="px-4 py-2 pr-8 w-full shadow-md bg-white border border-gray-200 rounded leading-tight focus:ring-2 focus:ring-blue-600  focus:outline-none"
-            type="text"
-            onChange={(e) => handleSearch(e.target.value)}
-          />
-        </div>
-      </div>
-      <div className="mb-4 space-y-2">
-        <label className="font-bold text-base">Filter By Status</label>
-        <div className="relative mt-2">
-          <select
-            onChange={(e) => handleFilterStatus(e.target.value)}
-            defaultValue={filterStatus}
-            className="px-4 py-2 pr-8 w-full shadow-md bg-white border border-gray-200 rounded leading-tight  focus:outline-none"
-          >
-            <option value="All">All</option>
-            <option value="Not Started">Not Started</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Completed">Completed</option>
-          </select>
-          <div className="absolute inset-y-0 right-0 px-3 bg-gray-200 rounded-r text-gray-700 flex items-center pointer-events-none">
-            <FaCaretDown />
+    <>
+      {error && errorMessage}
+      <div
+        style={{ display: `${error && "none"}` }}
+        className={`space-y-2 ${error && "hidden"}`}
+      >
+        <div>
+          <label className="font-bold text-base">Search By Title</label>
+          <div className="relative mt-2">
+            <input
+              className={[...defaultInputStyling].join(" ")}
+              type="text"
+              onChange={(e) => handleSearch(e.target.value)}
+            />
           </div>
         </div>
+        <div className="mb-4 space-y-2">
+          <label className="font-bold text-base">Filter By Status</label>
+          <div className="relative mt-2">
+            <select
+              onChange={(e) => handleFilterStatus(e.target.value)}
+              defaultValue={filterStatus}
+              className={[
+                "px-4",
+                "py-2",
+                "pr-8",
+                "w-full",
+                "shadow-md",
+                "bg-white border",
+                "order-gray-200",
+                "rounded leading-tight",
+                "focus:outline-none",
+              ].join(" ")}
+            >
+              <option value="All">All</option>
+              <option value="Not Started">Not Started</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
+            </select>
+            <div
+              className={[
+                "absolute",
+                "inset-y-0",
+                "right-0 px-3",
+                "bg-gray-200",
+                "rounded-r",
+                "text-gray-700",
+                "flex",
+                "items-center",
+                "pointer-events-none",
+              ].join(" ")}
+            >
+              <FaCaretDown />
+            </div>
+          </div>
+        </div>
+        <div>
+          {todos.length > 0 ? (
+            <table className="table-fixed w-full bg-white">
+              <thead>
+                <tr>
+                  <th className="border border-blue-100 w-2/6">Title</th>
+                  <th className="border border-blue-100 w-2/6">Date & Time</th>
+                  <th className="border border-blue-100 w-1/6">Status</th>
+                  <th className="border border-blue-100 w-1/6">Options</th>
+                </tr>
+              </thead>
+              <tbody>{rows}</tbody>
+            </table>
+          ) : (
+            "There are no todos"
+          )}
+        </div>
       </div>
-      <div>
-        {todos.length > 0 ? (
-          <table className="table-fixed w-full bg-white">
-            <thead>
-              <tr>
-                <th className="border border-blue-100 w-2/6">Title</th>
-                <th className="border border-blue-100 w-2/6">Date & Time</th>
-                <th className="border border-blue-100 w-1/6">Status</th>
-                <th className="border border-blue-100 w-1/6">Options</th>
-              </tr>
-            </thead>
-            <tbody>{rows}</tbody>
-          </table>
-        ) : (
-          "There are no todos"
-        )}
-      </div>
-    </div>
+    </>
   );
 };
 

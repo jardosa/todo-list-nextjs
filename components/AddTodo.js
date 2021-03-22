@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { useTodosUpdateContext } from "./TodosContext";
+import { useTodosContext, useTodosUpdateContext } from "./TodosContext";
 import { message } from "antd";
 import { FaCaretDown } from "react-icons/fa";
 import { request } from "../utils/TodoUtils";
+import {
+  defaultInputStyling,
+  defaultButtonStyling,
+} from "../styles/stylingDefault";
 
 const AddTodo = ({ setShowTodoForm }) => {
+  const [_, error] = [...useTodosContext()];
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
@@ -51,7 +56,15 @@ const AddTodo = ({ setShowTodoForm }) => {
             <label className="font-bold">Title</label>
             <div className="mt-2">
               <input
-                className="block px-4 py-2 pr-8 w-full shadow-md bg-white border border-gray-200 rounded leading-tight focus:ring-2 focus:ring-blue-600 focus:outline-none focus:border-gray-200"
+                disabled={error}
+                className={[
+                  ...defaultInputStyling,
+                  error ? "bg-gray-200" : "bg-white",
+                  "block",
+                ].join(" ")}
+                className={`block px-4 py-2 pr-8 w-full shadow-md ${
+                  error ? "bg-gray-200" : "bg-white"
+                } border border-gray-200 rounded leading-tight focus:ring-2 focus:ring-blue-600 focus:outline-none focus:border-gray-200`}
                 type="text"
                 name="title"
                 value={title}
@@ -65,7 +78,11 @@ const AddTodo = ({ setShowTodoForm }) => {
             <div className="mt-2">
               <div className="inline-block w-1/2">
                 <input
-                  className="mr-3 px-4 py-2 pr-8 w-full shadow-md bg-white border border-gray-200 rounded leading-tight focus:ring-2 focus:ring-blue-600 focus:outline-none focus:border-gray-200"
+                  disabled={error}
+                  className={[
+                    ...defaultInputStyling,
+                    error ? "bg-gray-200" : "bg-white",
+                  ].join(" ")}
                   type="date"
                   name="date"
                   value={date}
@@ -75,7 +92,11 @@ const AddTodo = ({ setShowTodoForm }) => {
               </div>
               <div className="inline-block w-1/2">
                 <input
-                  className="px-4 py-2 pr-8 w-full shadow-md bg-white border border-gray-200 rounded leading-tight focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                  disabled={error}
+                  className={[
+                    ...defaultInputStyling,
+                    error ? "bg-gray-200" : "bg-white",
+                  ].join(" ")}
                   type="time"
                   name="time"
                   value={time}
@@ -87,9 +108,14 @@ const AddTodo = ({ setShowTodoForm }) => {
           </div>
           <div>
             <label className="font-bold">Status</label>
-            <div className="relative mt-2 overflow-hidden ">
+            <div className="relative mt-2 overflow-hidden">
               <select
-                className="block appearance-none px-4 py-2 pr-8 w-full shadow-md bg-white border border-gray-200 rounded leading-tight focus:ring-1 focus:ring-blue-600 focus:outline-none"
+                disabled={error}
+                className={[
+                  "block",
+                  ...defaultInputStyling,
+                  error ? "bg-gray-200" : "bg-white",
+                ].join(" ")}
                 name="status"
                 value={status}
                 onChange={(e) => setStatus(() => e.target.value)}
@@ -99,7 +125,21 @@ const AddTodo = ({ setShowTodoForm }) => {
                 <option>In Progress</option>
                 <option>Completed</option>
               </select>
-              <div className="absolute inset-y-0 right-0 px-3 bg-gray-200  rounded-r text-gray-700 flex items-center pointer-events-none shadow-md">
+              <div
+                className={[
+                  "absolute",
+                  "inset-y-0",
+                  "right-0",
+                  "px-3",
+                  "bg-gray-200",
+                  "rounded-r",
+                  "text-gray-700",
+                  "flex",
+                  "items-center",
+                  "pointer-events-none",
+                  "shadow-md",
+                ].join(" ")}
+              >
                 <FaCaretDown />
               </div>
             </div>
@@ -107,11 +147,21 @@ const AddTodo = ({ setShowTodoForm }) => {
           <div>
             <input
               type="submit"
-              className="cursor-pointer w-2/12 mr-2 py-1 text-gray-100 rounded-sm px-2 shadow-md bg-blue-600 hover:bg-blue-500"
+              disabled={error}
+              className={[
+                ...defaultButtonStyling,
+                !error ? "bg-blue-600" : "bg-blue-400",
+                !error && "hover:bg-blue-500",
+              ].join(" ")}
               value="Submit"
             />
             <button
-              className="cursor-pointer w-2/12 mr-2 py-1 text-gray-100 rounded-sm px-2 shadow-md bg-red-600 hover:bg-red-500"
+              disabled={error}
+              className={[
+                ...defaultButtonStyling,
+                !error ? "bg-red-600" : "bg-red-400",
+                !error && "hover:bg-red-500",
+              ].join(" ")}
               onClick={handleClickDiscard}
             >
               Discard

@@ -1,9 +1,21 @@
 import React, { useState } from "react";
 import AddTodo from "./AddTodo";
 import TodoList from "./TodoList";
+import { useTodosContext } from "./TodosContext";
 
 const Main = () => {
   const [showTodoForm, setShowTodoForm] = useState(true);
+  const [_, error, loading] = [...useTodosContext()];
+  const loadingNode = (
+    <div className="h-screen items-center flex justify-center  mx-auto shadow-md">
+      <div className="text-center">
+        <h1 className="text-5xl">Loading Todo List...</h1>
+      </div>
+    </div>
+  );
+  if (loading) {
+    return loadingNode;
+  }
   return (
     <>
       <div className="max-w-screen-sm mx-auto rounded-md shadow-md bg-gray-100 text-lg">
@@ -19,8 +31,8 @@ const Main = () => {
           >
             {!showTodoForm ? `Add Todo` : `Hide Todo Form`}
           </button>
-          
-          <div className={`${!showTodoForm && 'hidden'}`}>
+
+          <div className={`${!showTodoForm && "hidden"}`}>
             <AddTodo setShowTodoForm={setShowTodoForm} />
           </div>
         </div>

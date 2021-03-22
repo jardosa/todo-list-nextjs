@@ -1,3 +1,4 @@
+import { Alert, message } from "antd";
 import React, { useContext, useEffect, useState } from "react";
 import { request } from "../utils/TodoUtils";
 
@@ -24,16 +25,22 @@ export default function TodosProvider({ children }) {
   const [todos, setTodos] = useState([]);
   const [filterStatus, setFilterStatus] = useState("All");
   const [search, setSearch] = useState("");
+  const [error, setError] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     (async () => {
+      setLoading(true)
       const {
         data,
         res: { status },
       } = await request("GET");
       if (status === 404) {
+        setError(true)
+        setLoading(false)
         return;
       }
+      setLoading(false)
       if (filterStatus && filterStatus === "All") {
         setTodos(() => data);
       } else {
@@ -43,7 +50,7 @@ export default function TodosProvider({ children }) {
   }, [filterStatus, search]);
 
   return (
-    <TodosContext.Provider value={todos}>
+    <TodosContext.Provider value={[todos, error, loading]}>
       <TodosFilter.Provider value={[filterStatus, setFilterStatus]}>
         <TodosSearch.Provider value={[search, setSearch]}>
           <TodosUpdate.Provider value={setTodos}>
