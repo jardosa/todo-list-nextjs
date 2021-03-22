@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useTodosUpdateContext } from "./TodosContext";
 import { message } from "antd";
-import { FaCar, FaCaretDown } from "react-icons/fa";
-import { addTodo } from "../utils/TodoUtils";
+import { FaCaretDown } from "react-icons/fa";
+import { request } from "../utils/TodoUtils";
 
 const AddTodo = ({ setShowTodoForm }) => {
   const [title, setTitle] = useState("");
@@ -23,7 +23,7 @@ const AddTodo = ({ setShowTodoForm }) => {
       status: status.value,
     };
 
-    await addTodo(values);
+    await request("POST", _, values);
     const res = await fetch("http://localhost:5000/todos");
     const data = await res.json();
 

@@ -1,3 +1,28 @@
+export async function request(method, id = 0, body) {
+
+  const paramsObject = {}
+  if (method === 'POST' || 'PUT'){
+    paramsObject['method'] = method
+    paramsObject['headers'] = {"Content-type": "application/json"}
+    paramsObject['body'] = JSON.stringify(body)
+  } else {
+    paramsObject['method'] = method
+  }
+  
+  const res = await fetch(`http://localhost:5000/todos/${id || ''}`, {
+    ...paramsObject
+  })
+
+  const data = await res.json();
+  return {
+    data,
+    res
+  }
+
+}
+
+/* Combined methods below to request method above */
+
 export async function addTodo(values) {
   await fetch("http://localhost:5000/todos", {
     method: "POST",
@@ -13,7 +38,7 @@ export async function fetchTodo(id) {
 
   const data = await res.json();
 
-  return data;
+  return data
 };
 
 export async function fetchTodos() {
@@ -21,7 +46,7 @@ export async function fetchTodos() {
 
   const data = await res.json();
 
-  return data;
+  return data
 };
 
 

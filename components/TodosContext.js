@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { fetchTodos } from "../utils/TodoUtils";
+import { request } from "../utils/TodoUtils";
 
 const TodosContext = React.createContext();
 const TodosUpdate = React.createContext();
@@ -23,11 +23,17 @@ export function useTodosSearchContext() {
 export default function TodosProvider({ children }) {
   const [todos, setTodos] = useState([]);
   const [filterStatus, setFilterStatus] = useState("All");
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     (async () => {
-      const data = await fetchTodos();
+      const {
+        data,
+        res: { status },
+      } = await request("GET");
+      if (status === 404) {
+        return;
+      }
       if (filterStatus && filterStatus === "All") {
         setTodos(() => data);
       } else {

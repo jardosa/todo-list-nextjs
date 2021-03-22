@@ -8,7 +8,7 @@ import {
   FaCaretDown,
 } from "react-icons/fa";
 import formatAMPM from "../utils/formatAMPM";
-import { deleteTodo, fetchTodo, updateTodo } from "../utils/TodoUtils";
+import { request } from "../utils/TodoUtils";
 import {
   useTodosContext,
   useTodosFilterStatusContext,
@@ -29,7 +29,8 @@ const TodoList = () => {
   };
 
   const handleDelete = async (id) => {
-    const res = await deleteTodo(id);
+    
+    const {res} = await request('DELETE', id)
     if (res.status === 200) {
       setTodos(() => todos.filter((todo) => todo.id !== id));
       message.info("A task has been removed");
@@ -43,10 +44,10 @@ const TodoList = () => {
   };
 
   const handleStatusChange = async (id, status) => {
-    const task = await fetchTodo(id);
-    const updatedTask = { ...task, status };
+    const {data: resData} = await request('GET', id, _);
+    const updatedTask = { ...resData, status };
 
-    const data = await updateTodo(id, updatedTask);
+    const {data} = await request('PUT', id, updatedTask);
 
     setTodos((todos) => {
       const newTodos = todos.map((todo) =>
